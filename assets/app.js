@@ -1,10 +1,10 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
-import './styles/app.css';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import AnalyticsPage from './react/AnalyticsPage.jsx';
+import 'antd/dist/reset.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+const rootElement = document.getElementById('analytics-page');
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(<AnalyticsPage />);
+}
