@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pie } from '@ant-design/charts';
 
-const data = [
-  { type: 'Mobile', value: 400 },
-  { type: 'Desktop', value: 300 },
-  { type: 'Tablet', value: 100 },
-];
-
 export default function DevicePieChart() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/analytics/devices')
+      .then(res => res.json())
+      .then(setData);
+  }, []);
+
   const config = {
     data,
     angleField: 'value',

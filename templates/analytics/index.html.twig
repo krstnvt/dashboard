@@ -1,6 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <h1>Chart Page</h1>
-  <div id="analytics-page"></div>
+<div id="analytics-page"></div>
+<div style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; align-items: center; gap: 12px;">
+  <span style="color: #1f1f1f; font-weight: 500;">Hello, {{ app.user.name }}</span>
+  <a href="{{ path('logout') }}" style="padding: 8px 16px; background: #ff4d4f; color: white; text-decoration: none; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">Logout</a>
+</div>
+<script>
+  window.currentUser = {
+    name: {{ app.user ? ('"' ~ app.user.name ~ '"') : 'null' }}
+  };
+</script>
+
+{% if app.user %}
+  <form action="{{ path('logout') }}" method="post">
+      <button type="submit">Logout</button>
+  </form>
+{% endif %}
 {% endblock %}

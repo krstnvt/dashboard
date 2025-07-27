@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Area } from '@ant-design/charts';
 
-const data = [
-  { hour: '8am', active: 20 },
-  { hour: '10am', active: 50 },
-  { hour: '12pm', active: 70 },
-  { hour: '2pm', active: 65 },
-  { hour: '4pm', active: 90 },
-  { hour: '6pm', active: 60 },
-  { hour: '8pm', active: 30 },
-];
-
 export default function ActivityChart() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/analytics/activity')
+      .then(res => res.json())
+      .then(setData);
+  }, []);
+
   const config = {
     data,
     xField: 'hour',

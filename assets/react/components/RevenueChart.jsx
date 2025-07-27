@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Column } from '@ant-design/charts';
 
-const data = [
-  { month: 'Jan', revenue: 6000 },
-  { month: 'Feb', revenue: 8000 },
-  { month: 'Mar', revenue: 7000 },
-  { month: 'Apr', revenue: 9000 },
-];
-
 export default function RevenueChart() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/analytics/revenue')
+      .then(res => res.json())
+      .then(setData);
+  }, []);
+
   const config = {
     data,
     xField: 'month',

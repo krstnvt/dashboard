@@ -18,3 +18,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    
+    App\Repository\AnalyticsRepositoryInterface:
+        class: App\Repository\AnalyticsRepository
+    
+    App\Service\AnalyticsService:
+        class: App\Service\CachedAnalyticsService
+        arguments:
+            $analyticsRepository: '@App\Repository\AnalyticsRepositoryInterface'
+            $cache: '@cache.app'

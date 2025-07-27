@@ -1,56 +1,99 @@
-import React from 'react';
-import { Card, Row, Col, Statistic, Avatar, Typography } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Statistic, Typography, Space, Badge } from 'antd';
 import { DollarOutlined, UserOutlined, RiseOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import RevenueChart from './components/RevenueChart.jsx';
 import DevicePieChart from './components/DevicePieChart.jsx';
 import ActivityChart from './components/ActivityChart.jsx';
 import VisitsChart from './components/VisitsChart.jsx';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 export default function AnalyticsPage() {
+  const [analytics, setAnalytics] = useState({ revenue: 0, users: 0, ctr: 0, signups: 0 });
+
+  useEffect(() => {
+    fetch('/api/analytics')
+      .then(res => res.json())
+      .then(setAnalytics);
+  }, []);
+
   return (
-    <Row gutter={16}>
-      <Col span={6}>
-        <Card style={{ textAlign: 'center' }}>
-          <Avatar size={120} style={{ marginBottom: 16 }} src="https://wallpapers.com/images/hd/default-profile-picture-placeholder-kal8zbcust2luxh3.jpg" />
-          <Title level={4}>Администратор</Title>
-          <Text>Добро пожаловать в панель управления</Text>
-        </Card>
-      </Col>
+    <div style={{ background: '#f0f2f5', minHeight: '100vh', padding: '24px' }}>
+      <div style={{ marginBottom: '24px' }}>
+        <Title level={2} style={{ margin: 0, color: '#1f1f1f' }}>Analytics Dashboard</Title>
+        <p style={{ color: '#8c8c8c', margin: '8px 0 0 0' }}>Welcome to your analytics overview</p>
+      </div>
 
-      <Col span={18}>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Card>
-              <Statistic title="Revenue" value={42000} prefix={<DollarOutlined />} />
-              <h3 style={{ marginTop: 24, marginBottom: 12 }}>Revenue Over Months</h3>
-              <RevenueChart />
-            </Card>
-          </Col>
+      <Row gutter={[24, 24]}>
+        <Col xs={24} sm={12} lg={6}>
+          <Card hoverable>
+            <Statistic 
+              title="Total Revenue" 
+              value={analytics.revenue} 
+              prefix={<DollarOutlined style={{ color: '#52c41a' }} />}
+              valueStyle={{ color: '#52c41a' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card hoverable>
+            <Statistic 
+              title="Total Users" 
+              value={analytics.users} 
+              prefix={<UserOutlined style={{ color: '#1890ff' }} />}
+              valueStyle={{ color: '#1890ff' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card hoverable>
+            <Statistic 
+              title="Click Through Rate" 
+              value={analytics.ctr} 
+              suffix="%"
+              prefix={<RiseOutlined style={{ color: '#722ed1' }} />}
+              valueStyle={{ color: '#722ed1' }}
+              precision={1}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card hoverable>
+            <Statistic 
+              title="Total Signups" 
+              value={analytics.signups} 
+              prefix={<ThunderboltOutlined style={{ color: '#fa8c16' }} />}
+              valueStyle={{ color: '#fa8c16' }}
+            />
+          </Card>
+        </Col>
+      </Row>
 
-          <Col span={6}>
-            <Card>
-              <h3 style={{ marginTop: 24, marginBottom: 12 }}>Devices Pie Chart</h3>
-              <DevicePieChart />
-            </Card>
-          </Col>
+      <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
+        <Col xs={24} lg={12}>
+          <Card title="Revenue Trends" hoverable>
+            <RevenueChart />
+          </Card>
+        </Col>
+        <Col xs={24} lg={12}>
+          <Card title="Device Distribution" hoverable>
+            <DevicePieChart />
+          </Card>
+        </Col>
+      </Row>
 
-          <Col span={6}>
-            <Card>
-              <h3 style={{ marginTop: 24, marginBottom: 12 }}>Activity</h3>
-              <ActivityChart />
-            </Card>
-          </Col>
-
-          <Col span={6}>
-            <Card>
-              <h3 style={{ marginTop: 24, marginBottom: 12 }}>Visits</h3>
-              <VisitsChart />
-            </Card>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
+      <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
+        <Col xs={24} lg={12}>
+          <Card title="Activity by Hour" hoverable>
+            <ActivityChart />
+          </Card>
+        </Col>
+        <Col xs={24} lg={12}>
+          <Card title="Daily Visits" hoverable>
+            <VisitsChart />
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 }

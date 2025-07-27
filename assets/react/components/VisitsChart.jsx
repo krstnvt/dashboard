@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Line } from '@ant-design/charts';
 
-const data = [
-  { day: 'Mon', value: 200 },
-  { day: 'Tue', value: 400 },
-  { day: 'Wed', value: 350 },
-  { day: 'Thu', value: 500 },
-  { day: 'Fri', value: 700 },
-  { day: 'Sat', value: 600 },
-  { day: 'Sun', value: 300 },
-];
-
 export default function VisitsChart() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/analytics/visits')
+      .then(res => res.json())
+      .then(setData);
+  }, []);
+
   const config = {
     data,
     xField: 'day',
